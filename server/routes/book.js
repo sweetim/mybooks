@@ -39,9 +39,14 @@ exports.postCollection = function(req, res, next){
 			if (!book) {
 				var googleBookApiUrl = provider.google.book + isbn + "&key=" + authKey.google.apiKey;
 
+				var rcvData = "";
 				https.get(googleBookApiUrl, function(result){		
 					result.on('data', function(data){
-						var dataJSON = JSON.parse(data);
+						rcvData += data;
+					});
+
+					result.on('end', function(){
+						var dataJSON = JSON.parse(rcvData);
 
 						if (dataJSON.totalItems > 0) {
 							var volumeInfo = dataJSON.items[0].volumeInfo;
@@ -79,30 +84,33 @@ exports.getCollection = function(req, res, next){
 		if (err) {
 			next(err);
 		} else {
-			var books = [];
+			var isbnCollection = [];
+
 			for(var i = 0; i < collection.length; i++){
-				var book = {};
-				book.isbn = collection[i].isbn;
-				Book.findOne({
-					isbn: book.isbn
-				}, function(err, data){
-					if (err) {
-						next(err);
-					} else {
-						book.title = data.title;
-						book.author = data.author;
-						book.pageNumber = data.author;
-						book.publisher = data.publisher;
-						book.publishedDate = data.publishedDate;
-						book.thumbnail = data.thumbnail;
-						book.dateCreated = data.dateCreated;
-
-						console.log(data.thumbnail);
-
-					}
-				});
+				isbnCollection[i] = collection[i].isbn;
 			}
 
+			res.json({
+				result: 1,
+				collection: isbnCollection
+			});
+		}
+	});
+};
+
+exports.getBook = function(req, res, next){
+	var isbn = req.params.isbn;
+
+	Book.findOne({
+		isbn: isbn
+	}, function(err, book){
+		if (err) {
+			next(err);
+		} else {
+			res.json({
+				result: 1,
+				book: book
+			});
 		}
 	});
 };

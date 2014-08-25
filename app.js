@@ -22,7 +22,7 @@ app.use('/api', routes.auth.authorization);
 
 app.post('/api/collection', routes.book.postCollection);
 app.get('/api/collection', routes.book.getCollection);
-
+app.get('/api/book/:isbn', routes.book.getBook);
 
 app.use(function(err, req, res, next){ // jshint ignore:line	
 	if (!err.code) {
