@@ -1,0 +1,11 @@
+#Node
+node_modules
+
+#Logs
+*.log
+
+#Angular.js
+/client/dist/
+
+#Grunt
+.tmp

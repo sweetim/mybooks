@@ -1,0 +1,28 @@
+{
+  "name": "MyBooks",
+  "version": "0.0.0",
+  "description": "A community librarian",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tim",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.6.5",
+    "express": "^4.8.5",
+    "mongoose": "^3.8.15"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-htmlmin": "^0.3.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.5.1",
+    "grunt-usemin": "^2.3.0",
+    "load-grunt-tasks": "^0.6.0",
+    "mocha": "^1.21.4"
+  }
+}
