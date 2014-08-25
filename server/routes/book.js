@@ -79,24 +79,30 @@ exports.getCollection = function(req, res, next){
 		if (err) {
 			next(err);
 		} else {
-			var books = [{}];
+			var books = [];
 			for(var i = 0; i < collection.length; i++){
-				books[i].isbn = collection[i].isbn;
+				var book = {};
+				book.isbn = collection[i].isbn;
 				Book.findOne({
-					isbn: books[i].isbn
+					isbn: book.isbn
 				}, function(err, data){
 					if (err) {
 						next(err);
 					} else {
-						books[i].title = data.title;
+						book.title = data.title;
+						book.author = data.author;
+						book.pageNumber = data.author;
+						book.publisher = data.publisher;
+						book.publishedDate = data.publishedDate;
+						book.thumbnail = data.thumbnail;
+						book.dateCreated = data.dateCreated;
+
+						console.log(data.thumbnail);
+
 					}
-				})
+				});
 			}
 
-			res.json(books);
-
-
-			console.log(books);
 		}
 	});
 };
