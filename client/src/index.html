@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Books</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+	<h1>Home</h1>
+	<div id="map-canvas"></div>
+
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgwYj_mN4DeJLiCBc5omZ0h4MzQQ6vV18"></script>
+	<script type="text/javascript">
+
+		function init(){
+			 var myLatLng = new google.maps.LatLng(-33.890542, 151.274856);
+
+
+			var mapOptions = {
+				center: myLatLng,
+				zoom: 8
+		    };
+
+			var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+			var image = 'http://img4.wikia.nocookie.net/__cb20140304134752/epic-rap-battles-of-cartoons/images/9/9f/Doraemon.png';
+			var beachMarker = new google.maps.Marker({
+				position: myLatLng,
+				map: map,
+				icon: image
+			});
+		}
+
+		google.maps.event.addDomListener(window, 'load', init);
+
+	</script>
+</body>
+</html>

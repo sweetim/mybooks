@@ -8,5 +8,8 @@ module.exports = {
 	"hashing": {
 		"len": 128,
 		"iteration": 12000
+	},
+	"google": {
+		"apiKey": "AIzaSyAgwYj_mN4DeJLiCBc5omZ0h4MzQQ6vV18"
 	}
 };

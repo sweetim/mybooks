@@ -1,4 +1,4 @@
-##Chatty
+##My Books
 ====
 
-A chatting tool
+A book sharing community

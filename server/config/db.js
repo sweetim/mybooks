@@ -28,6 +28,6 @@ module.exports = function(config){
 
 	//Initialize schema
 	require('../models/userSchema')();
-	//require('../models/msgSchema')();
-	//require('../models/dataIndexSchema')();
+	require('../models/bookSchema')();
+	require('../models/bookCollectionSchema')();
 };
