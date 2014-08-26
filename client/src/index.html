@@ -11,9 +11,10 @@
 	<!-- endbuild -->
 </head>
 <body>
+	<!--Navigation bar-->
+	<ng-include src="'/app/views/nav.html'"></ng-include>
+
 	<div class="container">
-		<h1>My Books</h1>
-		<hr>
 		<div ng-view></div>
 	</div>
 
@@ -29,5 +30,6 @@
     <script src="app/controllers/controller.js"></script>
     <script src="app/services/service.js"></script>
     <!-- endbuild -->
+
 </body>
 </html>
