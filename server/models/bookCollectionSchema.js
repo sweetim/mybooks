@@ -12,6 +12,10 @@ module.exports = function(){
 			type: String,
 			required: true
 		},
+		quantity: {
+			type: Number,
+			default: 1
+		},
 		dateCreated: {
 			type: Date,
 			required: true,
