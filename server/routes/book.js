@@ -101,7 +101,9 @@ exports.postCollection = function(req, res, next){
 exports.getCollection = function(req, res, next){	
 	BookCollection.find({
 		userId: req.user._id
-	}, function(err, collection){
+	}).sort({
+		dateCreated: -1
+	}).exec(function(err, collection){
 		if (err) {
 			next(err);
 		} else {
