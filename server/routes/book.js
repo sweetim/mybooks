@@ -40,10 +40,10 @@ exports.postCollection = function(req, res, next){
 							} else {
 								if (data.totalItems > 0) {
 									var volumeInfo = data.items[0].volumeInfo;
-
+									var newBook = {};
 									//Need to fix missing thumbnail
-									if (volumeInfo.imageLinks != null) {
-										var newBook = {
+									if (volumeInfo.imageLinks !== null) {
+										newBook = {
 											isbn: isbn,
 											title: volumeInfo.title,
 											author: volumeInfo.authors,
@@ -56,7 +56,7 @@ exports.postCollection = function(req, res, next){
 											}
 										};
 									} else {
-										var newBook = {
+										newBook = {
 											isbn: isbn,
 											title: volumeInfo.title,
 											author: volumeInfo.authors,
