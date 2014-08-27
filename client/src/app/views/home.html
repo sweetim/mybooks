@@ -2,13 +2,28 @@
 <div class="container">
 	<div class="col-md-4">
 		<p>Books</p>
-		<table class="table table-hover">
+		<!-- <table class="table table-hover">
 		    <tr ng-class="{active: info.isSelected}" ng-repeat="info in collectionsInfo" ng-click="getBookInfo(info.isbn)">
 	            <td>{{info.title}}</td>
 	            <td>{{info.dateCreated}}</td>
 	            <td>{{info.quantity}}</td>
 	        </tr>    
-		</table>
+		</table> -->
+
+		<ul class="media-list">
+			<li ng-repeat="info in collectionsInfo" ng-click="getBookInfo(info.isbn)" class="media" ng-class="{active: info.isSelected}">
+				<a class="pull-left" href="#">
+			    	<img class="media-object" ng-src="{{info.thumbnail}}" alt="1">
+				</a>
+				<div class="media-body">
+					<h4 class="media-heading">{{info.title}}</h4>
+					{{info.dateCreated}}
+					<span class="badge pull-right">{{info.quantity}}</span>
+				</div>
+			</li>
+		</ul>
+
+
 	</div>
 	<div class="col-md-8">
 		<p>Details</p>

@@ -20,80 +20,107 @@ exports.postCollection = function(req, res, next){
 		isbn: isbn
 	};
 
-	BookCollection.create(newBookCollection, function(err){
+	BookCollection.findOne(newBookCollection, function(err, collection){
 		if (err) {
 			next(err);
 		} else {
-			Book.findOne({
-				isbn: isbn
-			}, function(err, book){
-				if (err) {
-					next(err);
-				} else {
-					//Book not exist
-					if (!book) {
-						var googleBookApiUrl = provider.google.book + isbn + "&key=" + authKey.google.apiKey;
-
-						httpsRequest.get(googleBookApiUrl, function(err, data){
+			if (collection) {
+				collection.update({
+					$inc: {
+						quantity: 1
+					}
+				}, function(err){
+					if (err) {
+						next(err);
+					} else {
+						Book.findOne({
+							isbn: collection.isbn
+						}, function(err, book){
+							res.json({
+								result: 1,
+								bookInfo: book
+							});
+						});
+					}
+				});
+			} else {
+				BookCollection.create(newBookCollection, function(err){
+					if (err) {
+						next(err);
+					} else {
+						Book.findOne({
+							isbn: isbn
+						}, function(err, book){
 							if (err) {
 								next(err);
 							} else {
-								if (data.totalItems > 0) {
-									var volumeInfo = data.items[0].volumeInfo;
-									var newBook = {};
-									//Need to fix missing thumbnail
-									if (volumeInfo.imageLinks !== null) {
-										newBook = {
-											isbn: isbn,
-											title: volumeInfo.title,
-											author: volumeInfo.authors,
-											pageNumber: volumeInfo.pageCount,
-											publisher: volumeInfo.publisher,
-											publishDate: volumeInfo.publishedDate,
-											thumbnail: {
-												small: volumeInfo.imageLinks.smallThumbnail,
-												normal: volumeInfo.imageLinks.thumbnail
-											}
-										};
-									} else {
-										newBook = {
-											isbn: isbn,
-											title: volumeInfo.title,
-											author: volumeInfo.authors,
-											pageNumber: volumeInfo.pageCount,
-											publisher: volumeInfo.publisher,
-											publishDate: volumeInfo.publishedDate,
-											thumbnail: {
-												small: "http://img4.wikia.nocookie.net/__cb20140304134752/epic-rap-battles-of-cartoons/images/9/9f/Doraemon.png",
-												normal: "http://img4.wikia.nocookie.net/__cb20140304134752/epic-rap-battles-of-cartoons/images/9/9f/Doraemon.png"
-											}
-										};
-									}
+								//Book not exist
+								if (!book) {
+									var googleBookApiUrl = provider.google.book + isbn + "&key=" + authKey.google.apiKey;
 
-
-									Book.create(newBook, function(err, book){
+									httpsRequest.get(googleBookApiUrl, function(err, data){
 										if (err) {
 											next(err);
 										} else {
-											res.json({
-												result: 1,
-												bookInfo: book
-											});
+											if (data.totalItems > 0) {
+												var volumeInfo = data.items[0].volumeInfo;
+												var newBook = {};
+												//Need to fix missing thumbnail
+												if (volumeInfo.imageLinks !== null) {
+													newBook = {
+														isbn: isbn,
+														title: volumeInfo.title,
+														author: volumeInfo.authors,
+														pageNumber: volumeInfo.pageCount,
+														publisher: volumeInfo.publisher,
+														publishDate: volumeInfo.publishedDate,
+														thumbnail: {
+															small: volumeInfo.imageLinks.smallThumbnail,
+															normal: volumeInfo.imageLinks.thumbnail
+														}
+													};
+												} else {
+													newBook = {
+														isbn: isbn,
+														title: volumeInfo.title,
+														author: volumeInfo.authors,
+														pageNumber: volumeInfo.pageCount,
+														publisher: volumeInfo.publisher,
+														publishDate: volumeInfo.publishedDate,
+														thumbnail: {
+															small: "http://img4.wikia.nocookie.net/__cb20140304134752/epic-rap-battles-of-cartoons/images/9/9f/Doraemon.png",
+															normal: "http://img4.wikia.nocookie.net/__cb20140304134752/epic-rap-battles-of-cartoons/images/9/9f/Doraemon.png"
+														}
+													};
+												}
+
+
+												Book.create(newBook, function(err, book){
+													if (err) {
+														next(err);
+													} else {
+														res.json({
+															result: 1,
+															bookInfo: book
+														});
+													}
+												});
+											} else {
+												next(new Error('Unknown ISBN'));
+											}
 										}
-									});
+									});					
 								} else {
-									next(new Error('Unknown ISBN'));
-								}
+									res.json({
+										result: 1,
+										bookInfo: book
+									});
+								} 
 							}
-						});					
-					} else {
-						res.json({
-							result: 1,
-							bookInfo: book
 						});
-					} 
-				}
-			});
+					}
+				});
+			}
 		}
 	});
 };
@@ -135,19 +162,70 @@ exports.deleteCollection = function(req, res, next){
 		isbn: isbn
 	};
 
-	if (quantity) {
-		
-	} else {
-		BookCollection.remove(collectionToRemove, function(err){
-			if (err) {
-				next(err);
+	//Check quantity in query
+	if (!quantity) {
+		quantity = 1;
+	}
+
+	//Check quantity in database and removed accordingly
+	//If request quantity deleted more than db, it will be removed
+	//If quantity is < 1, will be removed 
+	BookCollection.findOne(collectionToRemove, function(err, collection){
+		if (err) {
+			next(err);
+		} else {
+			if (collection) {
+				if (collection.quantity > 1) {
+					var checkQuantity = collection.quantity - quantity;
+
+					if (checkQuantity > 0) {
+						collection.update({
+							$inc: {
+								quantity: -quantity
+							}
+						}, function(err){
+							if (err) {
+								next(err);
+							} else {
+								res.json({
+									result: 1,
+									deleted: quantity
+								});
+							}
+						});
+					} else {
+						//Show deleted all quantity in database
+						collection.remove(function(err){
+							if (err) {
+								next(err);
+							} else{
+								res.json({
+									result: 1,
+									deleted: collection.quantity
+								});
+							}
+						});
+					}
+				} else {
+					collection.remove(function(err){
+						if (err) {
+							next(err);
+						} else{
+							res.json({
+								result: 1,
+								deleted: 1
+							});
+						}
+					});
+				}
 			} else {
 				res.json({
-					result: 1
+					result: 1,
+					deleted: 0
 				});
 			}
-		});
-	}
+		}
+	});
 };
 
 exports.getBook = function(req, res, next){

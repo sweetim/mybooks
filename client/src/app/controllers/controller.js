@@ -15,6 +15,7 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 					isbn: book.isbn,
 					title: bookInfo.title,
 					dateCreated: book.dateCreated,
+					thumbnail: bookInfo.thumbnail.small,
 					quantity: book.quantity,
 					isSelected: false
 				};
