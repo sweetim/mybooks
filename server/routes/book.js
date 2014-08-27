@@ -41,18 +41,35 @@ exports.postCollection = function(req, res, next){
 								if (data.totalItems > 0) {
 									var volumeInfo = data.items[0].volumeInfo;
 
-									var newBook = {
-										isbn: isbn,
-										title: volumeInfo.title,
-										author: volumeInfo.authors,
-										pageNumber: volumeInfo.pageCount,
-										publisher: volumeInfo.publisher,
-										publishDate: volumeInfo.publishedDate,
-										thumbnail: {
-											small: volumeInfo.imageLinks.smallThumbnail,
-											normal: volumeInfo.imageLinks.thumbnail
-										}
-									};
+									//Need to fix missing thumbnail
+									if (volumeInfo.imageLinks != null) {
+										var newBook = {
+											isbn: isbn,
+											title: volumeInfo.title,
+											author: volumeInfo.authors,
+											pageNumber: volumeInfo.pageCount,
+											publisher: volumeInfo.publisher,
+											publishDate: volumeInfo.publishedDate,
+											thumbnail: {
+												small: volumeInfo.imageLinks.smallThumbnail,
+												normal: volumeInfo.imageLinks.thumbnail
+											}
+										};
+									} else {
+										var newBook = {
+											isbn: isbn,
+											title: volumeInfo.title,
+											author: volumeInfo.authors,
+											pageNumber: volumeInfo.pageCount,
+											publisher: volumeInfo.publisher,
+											publishDate: volumeInfo.publishedDate,
+											thumbnail: {
+												small: "http://img4.wikia.nocookie.net/__cb20140304134752/epic-rap-battles-of-cartoons/images/9/9f/Doraemon.png",
+												normal: "http://img4.wikia.nocookie.net/__cb20140304134752/epic-rap-battles-of-cartoons/images/9/9f/Doraemon.png"
+											}
+										};
+									}
+
 
 									Book.create(newBook, function(err, book){
 										if (err) {

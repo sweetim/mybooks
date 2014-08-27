@@ -83,6 +83,5 @@ myBookController.controller('NavController', ['$scope', '$location', 'AuthServic
 	$scope.logout = function(){
 		AuthService.logout();
 		$location.path('/login');
-
-	}
+	};
 }]);
