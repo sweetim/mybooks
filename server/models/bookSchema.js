@@ -13,10 +13,19 @@ module.exports = function(){
 			type: String,
 			required: true
 		},
+		subtitle: {
+			type: String
+		},
 		author: [{
 			type: String,
 			required: true
 		}],
+		description: {
+			type: String
+		},
+		contentVersion: {
+			type: String
+		},
 		pageNumber: {
 			type: Number,
 			required: true
@@ -27,10 +36,16 @@ module.exports = function(){
 		publishDate: {
 			type: String
 		},
-		thumbnail: {
-			small: String,
-			normal: String
+		categories: {
+			type: Array
 		},
+		language: {
+			type: String
+		},
+		printType: {
+			type: String
+		},
+		thumbnail: {},
 		dateCreated: {
 			type: Date,
 			required: true,

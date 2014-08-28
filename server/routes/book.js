@@ -66,34 +66,33 @@ exports.postCollection = function(req, res, next){
 												var volumeInfo = data.items[0].volumeInfo;
 												var newBook = {};
 												//Need to fix missing thumbnail
-												if (volumeInfo.imageLinks !== null) {
-													newBook = {
-														isbn: isbn,
-														title: volumeInfo.title,
-														author: volumeInfo.authors,
-														pageNumber: volumeInfo.pageCount,
-														publisher: volumeInfo.publisher,
-														publishDate: volumeInfo.publishedDate,
-														thumbnail: {
-															small: volumeInfo.imageLinks.smallThumbnail,
-															normal: volumeInfo.imageLinks.thumbnail
-														}
-													};
+												var imageLinks = {};
+
+												//Filter incoming result
+												if (volumeInfo.hasOwnProperty('imageLinks')) {
+													imageLinks = volumeInfo.imageLinks;
 												} else {
-													newBook = {
-														isbn: isbn,
-														title: volumeInfo.title,
-														author: volumeInfo.authors,
-														pageNumber: volumeInfo.pageCount,
-														publisher: volumeInfo.publisher,
-														publishDate: volumeInfo.publishedDate,
-														thumbnail: {
-															small: "http://img4.wikia.nocookie.net/__cb20140304134752/epic-rap-battles-of-cartoons/images/9/9f/Doraemon.png",
-															normal: "http://img4.wikia.nocookie.net/__cb20140304134752/epic-rap-battles-of-cartoons/images/9/9f/Doraemon.png"
-														}
+													imageLinks = {
+														smallThumbnail: "https://lh4.googleusercontent.com/-by3TNG1Dhtw/AAAAAAAAAAI/AAAAAAAAAN0/gOuqGurlI8o/photo.jpg?sz=64",
+														thumbnail: "https://lh4.googleusercontent.com/-by3TNG1Dhtw/AAAAAAAAAAI/AAAAAAAAAN0/gOuqGurlI8o/photo.jpg?sz=64"
 													};
 												}
 
+												newBook = {
+													isbn: isbn,
+													title: volumeInfo.title,
+													subtitle: volumeInfo.subtitle,
+													author: volumeInfo.authors,
+													description: volumeInfo.description,
+													contentVersion: volumeInfo.contentVersion,
+													pageNumber: volumeInfo.pageCount,
+													publisher: volumeInfo.publisher,
+													publishDate: volumeInfo.publishedDate,
+													categories: volumeInfo.categories,
+													language: volumeInfo.language,
+													printType: volumeInfo.printType,
+													thumbnail: imageLinks
+												};
 
 												Book.create(newBook, function(err, book){
 													if (err) {
@@ -106,7 +105,11 @@ exports.postCollection = function(req, res, next){
 													}
 												});
 											} else {
-												next(new Error('Unknown ISBN'));
+												res.json({
+													result: 0,
+													err: 'Unknown ISBN code',
+													bookInfo: null
+												});
 											}
 										}
 									});					

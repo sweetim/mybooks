@@ -15,7 +15,7 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 					isbn: book.isbn,
 					title: bookInfo.title,
 					dateCreated: book.dateCreated,
-					thumbnail: bookInfo.thumbnail.small,
+					thumbnail: bookInfo.thumbnail.smallThumbnail,
 					quantity: book.quantity,
 					isSelected: false
 				};
@@ -36,11 +36,14 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 			var info = {
 				isbn: bookInfo.isbn,
 				title: bookInfo.title,
+				subtitle: bookInfo.subtitle,
 				pageNumber: bookInfo.pageNumber,
 				publisher: bookInfo.publisher,
 				publishDate: bookInfo.publishDate,
 				author: bookInfo.author,
-				thumbnail: bookInfo.thumbnail
+				description: bookInfo.description,
+				thumbnail: bookInfo.thumbnail,
+				categories: bookInfo.categories
 			};
 
 			//Highlight selected row

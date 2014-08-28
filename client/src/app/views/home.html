@@ -2,6 +2,8 @@
 <div class="container">
 	<div class="col-md-4">
 		<p>Books</p>
+		<input type="text" class="form-control" placeholder="Search">
+		<div class="row"></div>
 		<ul class="media-list">
 			<li ng-repeat="info in collectionsInfo" ng-click="getBookInfo(info.isbn)" ng-class="{active: info.isSelected, media: true}">
 				<a class="pull-left" href="#">
@@ -19,14 +21,22 @@
 		<p>Details</p>     
 
         <div ui-toggle="bookInfo.title" class="animated"> 
-        	<img ng-src={{bookInfo.thumbnail.normal}} class="img-thumbnail">
+        	<span ng-repeat="category in bookInfo.categories" class="label label-info">{{category}}</span>
+
+        	<blockquote>
+		        <p>{{bookInfo.title}}</p>
+		        <p>{{bookInfo.subtitle}}</p>		   
+		        <footer ng-repeat="author in bookInfo.author">{{author}}</footer>       
+        	</blockquote>
+        	<img ng-src={{bookInfo.thumbnail.smallThumbnail}} class="img-thumbnail">
 			<p>{{bookInfo.isbn}}</p>
-	        <p>{{bookInfo.title}}</p>
 	        <p>{{bookInfo.pageNumber}}</p>
 	        <p>{{bookInfo.publisher}}</p>
 	        <p>{{bookInfo.publishDate}}</p>
-	        <p ng-repeat="author in bookInfo.author">{{author}}</p>  
-	        <button ng-click="deleteCollection(bookInfo)" type="button" class="btn btn-danger">Delete</button>    
+	        
+	        <p>{{bookInfo.description}}</p>
+			<button ng-click="deleteCollection(bookInfo)" type="button" class="btn btn-danger">Delete</button>    
+        	
         </div> 
 	</div>	
 </div>

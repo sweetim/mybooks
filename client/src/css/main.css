@@ -28,10 +28,11 @@
     border-top-right-radius: 0;
 }
 
+
 .media-list .active {
-    background-color: #efefef
+    border-left-style: solid;
+    border-width: thick;
+    border-left-color: #63D1F4;
+    background-color: #efefef;
 }
 
-.test {
-    background-color: #efefef
-}
