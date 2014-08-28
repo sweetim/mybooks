@@ -2,8 +2,10 @@
 
 var app = angular.module('myBooks', [
 	'ngRoute',
+	'ngAnimate',
 	'myBookController',
-	'myBookService']);
+	'myBookService',
+	'myBookDirective']);
 
 app.config(['$routeProvider', function($routeProvider){
 	$routeProvider

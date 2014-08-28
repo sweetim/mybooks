@@ -5,7 +5,7 @@ module.exports = function(){
 
 	var bookSchema = mongoose.Schema({
 		isbn: {
-			type: Number,
+			type: String,
 			required: true,
 			unique: true
 		},

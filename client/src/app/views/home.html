@@ -2,16 +2,8 @@
 <div class="container">
 	<div class="col-md-4">
 		<p>Books</p>
-		<!-- <table class="table table-hover">
-		    <tr ng-class="{active: info.isSelected}" ng-repeat="info in collectionsInfo" ng-click="getBookInfo(info.isbn)">
-	            <td>{{info.title}}</td>
-	            <td>{{info.dateCreated}}</td>
-	            <td>{{info.quantity}}</td>
-	        </tr>    
-		</table> -->
-
 		<ul class="media-list">
-			<li ng-repeat="info in collectionsInfo" ng-click="getBookInfo(info.isbn)" class="media" ng-class="{active: info.isSelected}">
+			<li ng-repeat="info in collectionsInfo" ng-click="getBookInfo(info.isbn)" ng-class="{active: info.isSelected, media: true}">
 				<a class="pull-left" href="#">
 			    	<img class="media-object" ng-src="{{info.thumbnail}}" alt="1">
 				</a>
@@ -22,17 +14,19 @@
 				</div>
 			</li>
 		</ul>
-
-
 	</div>
 	<div class="col-md-8">
-		<p>Details</p>
-		<img ng-src={{bookInfo.thumbnail.normal}} class="img-thumbnail">
-		<p>{{bookInfo.isbn}}</p>
-        <p>{{bookInfo.title}}</p>
-        <p>{{bookInfo.pageNumber}}</p>
-        <p>{{bookInfo.publisher}}</p>
-        <p>{{bookInfo.publishDate}}</p>
-        <p ng-repeat="author in bookInfo.author">{{author}}</p>        
+		<p>Details</p>     
+
+        <div ui-toggle="bookInfo.title" class="animated"> 
+        	<img ng-src={{bookInfo.thumbnail.normal}} class="img-thumbnail">
+			<p>{{bookInfo.isbn}}</p>
+	        <p>{{bookInfo.title}}</p>
+	        <p>{{bookInfo.pageNumber}}</p>
+	        <p>{{bookInfo.publisher}}</p>
+	        <p>{{bookInfo.publishDate}}</p>
+	        <p ng-repeat="author in bookInfo.author">{{author}}</p>  
+	        <button ng-click="deleteCollection(bookInfo)" type="button" class="btn btn-danger">Delete</button>    
+        </div> 
 	</div>	
 </div>

@@ -74,6 +74,24 @@ myBookService.factory('CollectionService', ['$q', '$http', function($q, $http){
 
 			return defer.promise;
 		},
+		deleteCollection: function(isbn, quantity){
+			var defer = $q.defer();
+			var url = "";
+			
+			if (quantity) {
+				url = isbn + "?q=" + quantity;
+			}
+
+			$http.delete('/api/collection/' + isbn + url)
+				.success(function(res){
+					defer.resolve(res.deleted);
+				})
+				.error(function(status){
+					console.log(status);
+				});
+
+			return defer.promise;
+		},
 		getBook: function(isbn){
 			var defer = $q.defer();
 

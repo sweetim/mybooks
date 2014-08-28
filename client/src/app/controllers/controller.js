@@ -55,6 +55,20 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 			$scope.bookInfo = info;
 		});
 	};
+
+	$scope.deleteCollection = function(bookInfo){
+		CollectionService.deleteCollection(bookInfo.isbn).then(function(deleted){
+			for(var i = 0; i < $scope.collectionsInfo.length; i++){
+				if ($scope.collectionsInfo[i].isbn === bookInfo.isbn) {
+					if ($scope.collectionsInfo[i].quantity > deleted) {
+						$scope.collectionsInfo[i].quantity -= deleted;
+					} else {
+						$scope.collectionsInfo.splice(i--, 1);
+					}
+				}
+			}
+		});
+	};
 }]);
 
 myBookController.controller('AuthController', ['$scope', '$location', 'AuthService', function($scope, $location, AuthService){
