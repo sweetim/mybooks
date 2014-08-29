@@ -3,6 +3,7 @@
 	<div class="col-md-4">
 		<p>Books</p>
 		<input type="text" class="form-control" placeholder="Search">
+		<div class="spacer10"></div>
 		<div class="row"></div>
 		<ul class="media-list">
 			<li ng-repeat="info in collectionsInfo" ng-click="getBookInfo(info.isbn)" ng-class="{active: info.isSelected, media: true}">
