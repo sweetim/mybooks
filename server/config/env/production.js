@@ -3,8 +3,8 @@
 module.exports = {
 	"port": process.env.PORT || 3000,
 	"db": {
-		"url": "mongodb://ds051838.mongolab.com",
-		"port": "51838",
+		"url": "mongodb://ds059509.mongolab.com",
+		"port": "59509",
 		"name": "mybooks",
 		"user": "admin",
 		"pass": "admin"
