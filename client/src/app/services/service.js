@@ -113,7 +113,7 @@ myBookService.factory('httpInterceptor', ['$q', '$location', '$window', function
 	return {
 		'request': function(config){
 			//var baseUrl = "http://localhost:3000";
-			var baseUrl = "http://mybooks1.herokuapp.com"
+			var baseUrl = "http://mybooks1.herokuapp.com";
 			config.url = baseUrl + config.url;
 
 			if ($window.localStorage.token) {
