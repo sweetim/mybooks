@@ -2,11 +2,11 @@
 <div class="container">
 	<div class="col-md-4">
 		<p>Books</p>
-		<input type="text" class="form-control" placeholder="Search">
+		<input ng-model="searchText" type="text" class="form-control" placeholder="Search">
 		<div class="spacer10"></div>
 		<div class="row"></div>
 		<ul class="media-list">
-			<li ng-repeat="info in collectionsInfo" ng-click="getBookInfo(info.isbn)" ng-class="{active: info.isSelected, media: true}">
+			<li ng-repeat="info in collectionsInfo | filter: searchText | orderBy: 'dateCreated': true" ng-click="getBookInfo(info.isbn)" ng-class="{active: info.isSelected, media: true}">
 				<a class="pull-left" href="#">
 			    	<img class="media-object" ng-src="{{info.thumbnail}}" alt="1">
 				</a>
@@ -23,7 +23,7 @@
 
         <div ui-toggle="bookInfo.title" class="animated"> 
         	<span ng-repeat="category in bookInfo.categories" class="label label-info">{{category}}</span>
-
+        	<div class="spacer10"></div>
         	<blockquote>
 		        <p>{{bookInfo.title}}</p>
 		        <p>{{bookInfo.subtitle}}</p>		   

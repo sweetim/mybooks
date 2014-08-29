@@ -11,6 +11,7 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 	CollectionService.getCollection().then(function(collections){
 		collections.forEach(function(book){
 			CollectionService.getBook(book.isbn).then(function(bookInfo){
+				
 				var info = {
 					isbn: book.isbn,
 					title: bookInfo.title,

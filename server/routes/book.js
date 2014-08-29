@@ -145,7 +145,7 @@ exports.getCollection = function(req, res, next){
 		} else {
 			var isbnCollection = [];
 
-			for(var i = 0; i < collection.length; i++){
+			for(var i = 0; i < collection.length; i++){				
 				var collectionInfo = {};
 				collectionInfo.isbn = collection[i].isbn;
 				collectionInfo.dateCreated = collection[i].dateCreated;
