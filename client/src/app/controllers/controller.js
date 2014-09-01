@@ -74,12 +74,20 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 	};
 }]);
 
-myBookController.controller('AuthController', ['$scope', '$location', 'AuthService', function($scope, $location, AuthService){
-	$scope.login = function(user){
+myBookController.controller('AuthController', ['$scope', '$location', '$window', 'AuthService', function($scope, $location, $window, AuthService){
+	$scope.loginLocal = function(user){
 		AuthService.login(user).then(function(user){
 			if (user) {
 				$location.path('/');
 			}
+		});
+	};
+
+	$scope.loginGoogle = function(){
+		//$window.location.href="/auth/login/google";
+
+		AuthService.loginGoogle().then(function(data){
+			console.log(data);
 		});
 	};
 

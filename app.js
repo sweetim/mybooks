@@ -15,10 +15,13 @@ app.use(express.static('./public'));
 
 var routes = require('./server/routes');
 
-app.post('/auth/register', routes.auth.register);
-app.post('/auth/login', routes.auth.login);
+app.post('/auth/register', routes.authLocal.register);
+app.post('/auth/login', routes.authLocal.login);
 
-app.use('/api', routes.auth.authorization);
+app.get('/auth/login/google', routes.authGoogle.login);
+app.get('/auth/google/callback', routes.authGoogle.callback);
+
+app.use('/api', routes.authLocal.authorization);
 
 app.post('/api/collection', routes.book.postCollection);
 app.get('/api/collection', routes.book.getCollection);

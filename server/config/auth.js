@@ -10,6 +10,9 @@ module.exports = {
 		"iteration": 12000
 	},
 	"google": {
-		"apiKey": "AIzaSyAgwYj_mN4DeJLiCBc5omZ0h4MzQQ6vV18"
+		"clientId": "780583752170-0am63sn470uik9bojss4oop0nlk7nu32.apps.googleusercontent.com",
+		"secret": "AmNP04LrAWkT1IxSQMr1H0XM",
+		"redirectUrl": "http://localhost:3000/auth/google/callback",
+		"apiKey": "AIzaSyA_iZBSB1x5BbXmrffpmGuw7saWx3j6MOo"
 	}
 };

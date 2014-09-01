@@ -1,8 +1,25 @@
 <h3>Login</h3>
-<form ng-submit="login(user)" class="form-signin" role="form">
-	<input ng-model="user.username" type="text" class="form-control" placeholder="Username" required autofocus>
-	<input ng-model="user.password" type="password" class="form-control" placeholder="Password" required>
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-</form>
-<label>Don't have an account?<a href="#/register">Sign up now</a></label>
+<div class="col-md-6">
+	<form ng-submit="loginLocal(user)" class="form-signin" role="form">
+		<input ng-model="user.username" type="text" class="form-control" placeholder="Username" required autofocus>
+		<input ng-model="user.password" type="password" class="form-control" placeholder="Password" required>
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	</form>
+
+	<label>Don't have an account?<a href="#/register">Sign up now</a></label>
+</div>
+<div class="col-md-6">
+	<div class="form-signin">
+		<button ng-click="loginGoogle()" class="btn btn-block btn-social btn-google-plus">
+			<i class="fa fa-google-plus"></i> Sign in with Google
+		</button>
+		<button class="btn btn-block btn-social btn-facebook">
+			<i class="fa fa-facebook"></i> Sign in with Facebook
+		</button>
+	</div>
+</div>
+
+
+
+
 
