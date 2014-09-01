@@ -6,7 +6,7 @@
 		<div class="spacer10"></div>
 		<div class="row"></div>
 		<ul class="media-list">
-			<li ng-repeat="info in collectionsInfo | filter: searchText | orderBy: 'dateCreated': true" ng-click="getBookInfo(info.isbn)" ng-class="{active: info.isSelected, media: true}" class="animated fadeOutLeft">
+			<li ng-repeat="info in collectionsInfo | filter: searchText | orderBy: 'dateCreated': true" ng-click="getBookInfo(info.isbn)" ng-class="{active: info.isSelected, media: true}">
 				<a class="pull-left" href="#">
 			    	<img class="media-object" ng-src="{{info.thumbnail}}" alt="1">
 				</a>

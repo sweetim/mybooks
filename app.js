@@ -2,7 +2,6 @@
 
 var express = require('express'),
 	bodyParser = require('body-parser');
-
 var app = express();
 
 var config = require('./server/config/env/' + app.get('env'));
