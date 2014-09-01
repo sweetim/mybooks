@@ -52,6 +52,17 @@ module.exports = function(grunt){
 				ext: '.min.css'
 			}
 		},
+		sass: {
+			dist: {
+				files: [{
+					expand: true,
+					cwd: 'client/src/css/scss/',
+					src: '*.scss',
+					dest: 'client/src/css/',
+					ext: '.css'
+				}]
+			}
+		},
 		jshint: {
 			files: ['server/**/*.js', 'client/src/**/*.js', '*.js'],
 			options: {

@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(express.static('./client/src/'));
+app.use(express.static('./public'));
 
 var routes = require('./server/routes');
 
