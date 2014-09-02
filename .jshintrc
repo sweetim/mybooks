@@ -13,6 +13,7 @@
 	"unused": true,
 	"strict": true,	
 	"globals": {
-		"angular": true
+		"angular": true,
+		"gapi": true
 	}
 }

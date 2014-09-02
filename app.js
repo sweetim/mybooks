@@ -18,9 +18,9 @@ var routes = require('./server/routes');
 app.post('/auth/register', routes.authLocal.register);
 app.post('/auth/login', routes.authLocal.login);
 
-app.get('/auth/login/google', routes.authGoogle.login);
-app.post('/auth/login/google', routes.authGoogle.clientLogin);
-app.get('/auth/google/callback', routes.authGoogle.callback);
+//app.get('/auth/login/google', routes.authGoogle.getLogin);
+app.post('/auth/login/google', routes.authGoogle.login);
+//app.get('/auth/google/callback', routes.authGoogle.callback);
 
 app.use('/api', routes.authLocal.authorization);
 

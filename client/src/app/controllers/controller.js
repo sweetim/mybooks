@@ -84,8 +84,27 @@ myBookController.controller('AuthController', ['$scope', '$location', '$window',
 	};
 
 	$scope.loginGoogle = function(){
-		$window.location.href="/auth/login/google";	
+		//$window.location.href="/auth/login/google";	
+
+		function signInCallback(authResult){
+			console.log(authResult);
+			if (authResult.code && authResult.status.method === "PROMPT") {				
+				AuthService.loginGoogle(authResult.code).then(function(user){
+					if (user) {
+						$location.path('/');
+					}
+				});
+			} else {
+				//Error login
+			}
+		}
+
+		gapi.auth.signIn({
+			'callback': signInCallback
+		});
 	};
+
+
 
 	$scope.logout = function(){
 		AuthService.logout();

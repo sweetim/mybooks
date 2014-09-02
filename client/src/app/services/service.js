@@ -20,6 +20,28 @@ myBookService.factory('AuthService', ['$http', '$q', '$window', function($http, 
 			
 			return defer.promise;
 		},
+		loginGoogle: function(code){
+			var defer = $q.defer();
+
+			var authCode = {
+				code: code
+			};
+
+			$http.post('/auth/login/google', authCode)
+				.success(function(res){
+					if (res.result) {
+						console.log(res);
+						$window.localStorage.token = res.token;
+						$window.localStorage.user = res.userId;
+						defer.resolve(res.userId);
+					}
+				})
+				.error(function(status){
+					console.log(status);
+				});
+
+			return defer.promise;
+		},
 		logout: function(){
 			if ($window.localStorage.token) {
 				$window.localStorage.clear();
