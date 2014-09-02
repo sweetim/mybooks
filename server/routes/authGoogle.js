@@ -36,10 +36,14 @@ exports.callback = function(req, res, next){
 				}, function(err, user){
 					console.log(user);
 				});
-				res.json(token);
+				res.redirect('/');
 			}
 		});
 	} else {
 		next(new Error('Google + login failed'));
 	}
+};
+
+exports.clientLogin = function(req, res, next){
+	
 };

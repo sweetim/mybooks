@@ -84,11 +84,7 @@ myBookController.controller('AuthController', ['$scope', '$location', '$window',
 	};
 
 	$scope.loginGoogle = function(){
-		//$window.location.href="/auth/login/google";
-
-		AuthService.loginGoogle().then(function(data){
-			console.log(data);
-		});
+		$window.location.href="/auth/login/google";	
 	};
 
 	$scope.logout = function(){
@@ -102,6 +98,10 @@ myBookController.controller('AuthController', ['$scope', '$location', '$window',
 				$location.path('/');
 			}
 		});
+	};
+
+	$scope.signInCallback = function(authResult){
+		console.log(authResult);
 	};
 }]);
 
