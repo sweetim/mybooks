@@ -1,7 +1,6 @@
 <p>Welcome! {{user}}</p>
 <div class="container">
 	<div class="col-md-4">
-		<p>Books</p>
 		<input ng-model="searchText" type="text" class="form-control" placeholder="Search">
 		<div class="spacer10"></div>
 		<div class="row"></div>
@@ -18,8 +17,13 @@
 			</li>
 		</ul>
 	</div>
-	<div class="col-md-8">
-		<p>Details</p>     
+	<div class="col-md-8">  
+		<div ng-show="alertInfo.show" ng-class="{bounceOutRight: !alertInfo.show, bounceInRight: alertInfo.show}" class="animated alert alert-info" role="alert">
+			{{alertInfo.msg}}
+			<button ng-click="alertInfo.show = !alertInfo.show" type="button" class="close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
 
         <div ui-toggle="bookInfo.title" class="animated"> 
         	<span ng-repeat="category in bookInfo.categories" class="label label-info">{{category}}</span>
@@ -37,7 +41,7 @@
 	        
 	        <p>{{bookInfo.description}}</p>
 			<button ng-click="deleteCollection(bookInfo)" type="button" class="btn btn-danger">Delete</button>    
-        	<button ng-click="fbShareCollection(bookInfo)" type="button" class="btn btn-info">Share</button>  
+        	<button ng-click="fbShareCollection(bookInfo)" type="button" class="btn btn-info">Share</button>
         </div> 
 	</div>	
 </div>

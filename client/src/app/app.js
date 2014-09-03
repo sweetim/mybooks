@@ -16,6 +16,12 @@ app.config(['$routeProvider', function($routeProvider){
 				restricted: true
 			}
 		})
+		.when('/about', {
+			templateUrl: '/app/views/about.html',
+			access: {
+				restricted: false
+			}
+		})
 		.when('/login', {
 			controller: 'AuthController',
 			templateUrl: '/app/views/login.html',
@@ -63,10 +69,26 @@ app.run(['$rootScope', '$location', '$window', function($rootScope, $location, $
 
 	$window.fbAsyncInit = function(){
 		FB.init({
-			appId: '825297847502790',
+			appId: '826122044087037',
 			cookie: true,
 			xfbml: true,
 			version: 'v2.1'
+		});
+
+		FB.getLoginStatus(function(response) {
+			switch(response.status){
+				case 'connected':
+					break;
+				case 'not_authorized':
+					$location.path('/login');
+					break;
+				case 'unknown':
+					$location.path('/login');
+					break;
+				default:
+					$location.path('/login');
+					break;
+			}
 		});
 	};
 

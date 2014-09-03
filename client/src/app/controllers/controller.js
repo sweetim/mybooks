@@ -7,6 +7,10 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 
 	$scope.collectionsInfo = [];
 	$scope.bookInfo = {};
+	$scope.alertInfo = {
+		show: false,
+		msg: ""
+	};
 
 	CollectionService.getCollection().then(function(collections){
 		collections.forEach(function(book){
@@ -75,9 +79,21 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 
 	$scope.fbShareCollection = function(bookInfo){
 		FB.api('/me/feed', 'post', {
-			message: "I got this book " + bookInfo.title
+			message: "I am sharing this book " + bookInfo.title,
+			link: "http://mybooks1.herokuapp.com",
+			picture: bookInfo.thumbnail.thumbnail,
+			name: bookInfo.title,
+			caption: bookInfo.subtitle,
+			description: bookInfo.description,
+			privacy: {
+				value: 'SELF'
+			}
 		}, function(response) {
-		    console.log(JSON.stringify(response));
+		    if (!response.error) {
+		    	$scope.alertInfo.show = true;
+		    	$scope.alertInfo.msg = bookInfo.title + " posted in Facebook!";
+		    	$scope.$digest();
+		    }
 		});
 	};
 }]);
@@ -94,7 +110,7 @@ myBookController.controller('AuthController', ['$scope', '$location', '$window',
 	$scope.loginGoogle = function(){
 
 		function signInCallback(authResult){			
-			if (authResult.code && authResult.status.method === "PROMPT") {				
+			if (authResult.code) {				
 				AuthService.loginGoogle(authResult.code).then(function(user){
 					if (user) {
 						$location.path('/');
@@ -119,7 +135,7 @@ myBookController.controller('AuthController', ['$scope', '$location', '$window',
 			switch(response.status){
 				case 'connected':
 					var token = response.authResponse.accessToken;
-					console.log(token);
+
 					AuthService.loginFacebook(token).then(function(user){
 						if (user) {
 							$location.path('/');
