@@ -14,5 +14,11 @@ module.exports = {
 		"secret": "AmNP04LrAWkT1IxSQMr1H0XM",
 		"redirectUrl": "postmessage",
 		"apiKey": "AIzaSyA_iZBSB1x5BbXmrffpmGuw7saWx3j6MOo"
+	},
+	"facebook": {
+		"clientId": "825297847502790",
+		"adminId": "825297847502790|Kd4NB3NkgUBm_NJGCqbs37Xr63c",
+		"secret": "4d4a828b0cfd02a36e719c62ad3a17e5",
+		"graphVersion": "v2.1"
 	}
 };

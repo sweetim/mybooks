@@ -21,6 +21,7 @@ app.post('/auth/login', routes.authLocal.login);
 //app.get('/auth/login/google', routes.authGoogle.getLogin);
 app.post('/auth/login/google', routes.authGoogle.login);
 //app.get('/auth/google/callback', routes.authGoogle.callback);
+app.post('/auth/login/facebook', routes.authFacebook.login);
 
 app.use('/api', routes.authLocal.authorization);
 

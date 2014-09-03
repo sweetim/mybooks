@@ -30,7 +30,27 @@ myBookService.factory('AuthService', ['$http', '$q', '$window', function($http, 
 			$http.post('/auth/login/google', authCode)
 				.success(function(res){
 					if (res.result) {
-						console.log(res);
+						$window.localStorage.token = res.token;
+						$window.localStorage.user = res.userId;
+						defer.resolve(res.userId);
+					}
+				})
+				.error(function(status){
+					console.log(status);
+				});
+
+			return defer.promise;
+		},
+		loginFacebook: function(token){
+			var defer = $q.defer();
+
+			var authToken = {
+				token: token
+			};
+
+			$http.post('/auth/login/facebook', authToken)
+				.success(function(res){
+					if (res.result) {
 						$window.localStorage.token = res.token;
 						$window.localStorage.user = res.userId;
 						defer.resolve(res.userId);
@@ -134,8 +154,8 @@ myBookService.factory('CollectionService', ['$q', '$http', function($q, $http){
 myBookService.factory('httpInterceptor', ['$q', '$location', '$window', function($q, $location, $window){
 	return {
 		'request': function(config){
-			var baseUrl = "http://localhost:3000";
-			//var baseUrl = "http://mybooks1.herokuapp.com";
+			//var baseUrl = "http://localhost:3000";
+			var baseUrl = "http://mybooks1.herokuapp.com";
 			config.url = baseUrl + config.url;
 
 			if ($window.localStorage.token) {

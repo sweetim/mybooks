@@ -13,21 +13,17 @@ module.exports = function(){
 	var userSchema = mongoose.Schema({
 		username: {
 			type: String,
-			required: true,
 			unique: true
 		},
-		/*email: {
+		email: {
 			type: String,
-			required: true,
 			unique: true
-		},*/
+		},
 		salt: {
-			type: String,
-			required: true
+			type: String
 		},
 		hash: {
-			type: String,
-			required: true
+			type: String
 		},
 		dateCreated: {
 			type: Date,
@@ -39,24 +35,28 @@ module.exports = function(){
 	userSchema.pre('validate', function(next){
 		var user = this;
 
-		//Generate salt
-		crypto.randomBytes(len, function(err, salt){
-			if (err) {
-				next(err);
-			} else {
-				user.salt = salt.toString('base64');
+		if (user.hash) {
+			//Generate salt
+			crypto.randomBytes(len, function(err, salt){
+				if (err) {
+					next(err);
+				} else {
+					user.salt = salt.toString('base64');
 
-				//Generate hash password with salt
-				crypto.pbkdf2(user.hash, user.salt, iterations, len, function(err, hash){
-					if (err) {
-						next(err);
-					} else {
-						user.hash = hash.toString('base64');
-						next();
-					}
-				});
-			}
-		});
+					//Generate hash password with salt
+					crypto.pbkdf2(user.hash, user.salt, iterations, len, function(err, hash){
+						if (err) {
+							next(err);
+						} else {
+							user.hash = hash.toString('base64');
+							next();
+						}
+					});
+				}
+			});
+		} else {
+			next();
+		}		
 	});
 
 	userSchema.methods.createHash = function(password, fn){

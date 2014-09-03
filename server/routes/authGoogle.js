@@ -1,12 +1,15 @@
 'use strict';
 
 var google = require('googleapis'),
+	mongoose = require('mongoose'),
 	googleOAuth2 = google.auth.OAuth2,
 	googlePlus = google.plus('v1'),
 	jwt = require('jsonwebtoken');
 
-var authKey = require('../config/auth').google;
+var User = mongoose.model('User');
+
 var config = require('../config/auth');
+var authKey = config.google;
 
 var clientGoogleOAuth2 = new googleOAuth2(authKey.clientId, authKey.secret, authKey.redirectUrl);
 
@@ -22,25 +25,52 @@ exports.login = function(req, res, next){
 				googlePlus.people.get({
 					userId: 'me',
 					auth: clientGoogleOAuth2
-				}, function(err, user){
-					var token = jwt.sign({
-						"iss": user.displayName
-					}, config.jwt.secret, {
-						expiresInMinutes: config.jwt.exp
-					});
+				}, function(err, gPlusUserInfo){
+					var email = gPlusUserInfo.emails[0].value;
+					var username = gPlusUserInfo.displayName;
 
-					res.json({
-						result: 1,
-						userId: user.displayName,
-						token: token
+					User.findOne({
+						email: email
+					}, function(err, user){
+						if (err) {
+							return next(err);
+						} else {
+							var token = jwt.sign({
+								"iss": username
+							}, config.jwt.secret, {
+								expiresInMinutes: config.jwt.exp
+							});
+
+							if (user) {
+								res.json({
+									result: 1,
+									userId: user.username,
+									token: token
+								});
+							} else {
+								var newUser = new User({
+									email: email,
+									username: username
+								});
+
+								newUser.save(function(err, newUserInfo){
+									if (err) {
+										return next(err);
+									} else {
+										res.json({
+											result: 1,
+											userId: newUserInfo.username,
+											token: token
+										});
+									}									
+								});
+							}
+						}
 					});
 				});
 			}
 		});
 	} else {
-		res.json({
-			result: 0,
-			err: 'Unknown token'
-		});
+		next(new Error('Unknown Google login code'));
 	}
 };

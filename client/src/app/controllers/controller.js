@@ -72,6 +72,14 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 			}
 		});
 	};
+
+	$scope.fbShareCollection = function(bookInfo){
+		FB.api('/me/feed', 'post', {
+			message: "I got this book " + bookInfo.title
+		}, function(response) {
+		    console.log(JSON.stringify(response));
+		});
+	};
 }]);
 
 myBookController.controller('AuthController', ['$scope', '$location', '$window', 'AuthService', function($scope, $location, $window, AuthService){
@@ -84,10 +92,8 @@ myBookController.controller('AuthController', ['$scope', '$location', '$window',
 	};
 
 	$scope.loginGoogle = function(){
-		//$window.location.href="/auth/login/google";	
 
-		function signInCallback(authResult){
-			console.log(authResult);
+		function signInCallback(authResult){			
 			if (authResult.code && authResult.status.method === "PROMPT") {				
 				AuthService.loginGoogle(authResult.code).then(function(user){
 					if (user) {
@@ -100,11 +106,35 @@ myBookController.controller('AuthController', ['$scope', '$location', '$window',
 		}
 
 		gapi.auth.signIn({
+			'clientid': '780583752170-0am63sn470uik9bojss4oop0nlk7nu32.apps.googleusercontent.com',
+			'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email',
+			'requestvisibleactions': 'http://schema.org/AddAction',
+			'cookiepolicy': 'single_host_origin',
 			'callback': signInCallback
 		});
 	};
 
-
+	$scope.loginFacebook = function(){
+		FB.login(function(response){
+			switch(response.status){
+				case 'connected':
+					var token = response.authResponse.accessToken;
+					console.log(token);
+					AuthService.loginFacebook(token).then(function(user){
+						if (user) {
+							$location.path('/');
+						}
+					});
+					break;
+				case 'not_authorized':
+					break;
+				default:
+					break;
+			}
+		}, {
+			scope: 'public_profile, email, publish_actions'
+		});
+	};
 
 	$scope.logout = function(){
 		AuthService.logout();
@@ -117,10 +147,6 @@ myBookController.controller('AuthController', ['$scope', '$location', '$window',
 				$location.path('/');
 			}
 		});
-	};
-
-	$scope.signInCallback = function(authResult){
-		console.log(authResult);
 	};
 }]);
 
