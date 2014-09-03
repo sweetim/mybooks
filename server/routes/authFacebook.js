@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 
 var User = mongoose.model('User');
 
-var authKey = config.facebook.production;
+var authKey = config.facebook.development;
 var graphProvider = provider.facebook.graph;
 
 exports.login = function(req, res, next){

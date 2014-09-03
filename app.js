@@ -1,7 +1,9 @@
 'use strict';
 
 var express = require('express'),
-	bodyParser = require('body-parser');
+	bodyParser = require('body-parser'),
+	favicon = require('serve-favicon');
+
 var app = express();
 
 var config = require('./server/config/env/' + app.get('env'));
@@ -12,6 +14,8 @@ app.use(bodyParser.json());
 
 app.use(express.static('./client/src/'));
 app.use(express.static('./public'));
+app.use(favicon('./public/favicon.ico'));
+
 
 var routes = require('./server/routes');
 
