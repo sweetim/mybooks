@@ -156,27 +156,32 @@ exports.getCollection = function(req, res, next){
 				if (err) {
 					next(err);
 				} else {
+					var totalCollection = [];
+
+
+					for(var i = 0; i < collection.length; i++){
+						for(var j = 0; j < book.length; j++){
+							if (collection[i].isbn === book[j].isbn) {
+								var collectionInfo = {};
+
+								collectionInfo.isbn = collection[i].isbn;
+								collectionInfo.dateCreated = collection[i].dateCreated;
+								collectionInfo.quantity = collection[i].quantity;
+								collectionInfo.bookInfo = book[j];
+
+								totalCollection.push(collectionInfo);
+								break;
+							}
+						}						
+					}
+
 					res.json({
 						result: 1,
-						totalCollection: collection.length,
-						collection: collection
+						totalCollection: totalCollection.length,
+						collection: totalCollection
 					});
 				}
 			});
-
-			/*for(var i = 0; i < collection.length; i++){				
-				var collectionInfo = {};
-				collectionInfo.isbn = collection[i].isbn;
-				collectionInfo.dateCreated = collection[i].dateCreated;
-				collectionInfo.quantity = collection[i].quantity;
-				isbnCollection.push(collectionInfo);
-			}
-
-			res.json({
-				result: 1,
-				totalCollection: isbnCollection.length,
-				collection: isbnCollection
-			});*/
 		}
 	});
 };

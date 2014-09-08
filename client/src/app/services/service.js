@@ -94,19 +94,22 @@ myBookService.factory('UserService', ['$window', function($window){
 	};
 }]);
 
-myBookService.factory('CollectionService', ['$q', '$http', function($q, $http){
+myBookService.factory('CollectionService', ['$q', '$http', 'BookService', function($q, $http, BookService){
 	return {
 		getCollection: function(){
 			var defer = $q.defer();
 
 			$http.get('/api/collection')
 				.success(function(res){
-
+			
 					//Convert to normal date format
-					res.bookInfo.forEach(function(data){
-						var date = new Date(data.dateCreated);
-						data.dateCreated = date.toUTCString();
-					});
+					for (var i = 0; i < res.totalCollection; i++) {
+						var convertDate = new Date(res.collection[i].dateCreated);
+						res.collection[i].dateCreated = convertDate.toUTCString();
+
+						//Add book info into Book Service
+						BookService.addBookInfo(res.collection[i].bookInfo);
+					}
 
 					defer.resolve(res.collection);
 				})
@@ -149,6 +152,35 @@ myBookService.factory('CollectionService', ['$q', '$http', function($q, $http){
 		}
 	};
 }]);
+
+myBookService.factory('BookService', function(){
+	var allBookInfo = [];
+
+	return {
+		getBookInfo: function(isbn){
+			for(var i = 0; i < allBookInfo.length; i++){
+				if (allBookInfo[i].isbn === isbn) {
+					var bookInfo = {
+						isbn: allBookInfo[i].isbn,
+						title: allBookInfo[i].title,
+						subtitle: allBookInfo[i].subtitle,
+						pageNumber: allBookInfo[i].pageNumber,
+						publisher: allBookInfo[i].publisher,
+						publishDate: allBookInfo[i].publishDate,
+						author: allBookInfo[i].author,
+						description: allBookInfo[i].description,
+						thumbnail: allBookInfo[i].thumbnail,
+						categories: allBookInfo[i].categories
+					};
+					return bookInfo;
+				}
+			}
+		},
+		addBookInfo: function(book){
+			allBookInfo.push(book);
+		}
+	};
+});
 
 
 myBookService.factory('httpInterceptor', ['$q', '$location', '$window', function($q, $location, $window){

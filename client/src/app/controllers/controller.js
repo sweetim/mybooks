@@ -2,7 +2,7 @@
 
 var myBookController = angular.module('myBookController', []);
 
-myBookController.controller('HomeController', ['$scope', 'UserService', 'CollectionService', function($scope, UserService, CollectionService){
+myBookController.controller('HomeController', ['$scope', 'UserService', 'CollectionService', 'BookService', function($scope, UserService, CollectionService, BookService){
 	$scope.user = UserService.getProfile();
 
 	$scope.collectionsInfo = [];
@@ -13,53 +13,39 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 	};
 
 	CollectionService.getCollection().then(function(collections){
-		collections.forEach(function(book){
-			console.log(book);
+
+		for(var i = 0; i < collections.length; i++){
 			var info = {
-					isbn: book.isbn,
-					title: bookInfo.title,
-					dateCreated: book.dateCreated,
-					thumbnail: bookInfo.thumbnail.smallThumbnail,
-					quantity: book.quantity,
-					isSelected: false
-				};
+				isbn: collections[i].isbn,
+				title: collections[i].bookInfo.title,
+				dateCreated: collections[i].dateCreated,
+				thumbnail: collections[i].bookInfo.thumbnail.smallThumbnail,
+				quantity: collections[i].quantity,
+				isSelected: false
+			};
 
 			//Highlight first element
 			if ($scope.collectionsInfo.length < 1) {
 				info.isSelected = true;
-				$scope.bookInfo = bookInfo;
+
+				//Get first highlighted book info
+				$scope.bookInfo = BookService.getBookInfo(info.isbn);
 			}
 
 			$scope.collectionsInfo.push(info);
-		});
+		}
 	});
 
 	$scope.getBookInfo = function(isbn){
-		CollectionService.getBook(isbn).then(function(bookInfo){
-			var info = {
-				isbn: bookInfo.isbn,
-				title: bookInfo.title,
-				subtitle: bookInfo.subtitle,
-				pageNumber: bookInfo.pageNumber,
-				publisher: bookInfo.publisher,
-				publishDate: bookInfo.publishDate,
-				author: bookInfo.author,
-				description: bookInfo.description,
-				thumbnail: bookInfo.thumbnail,
-				categories: bookInfo.categories
-			};
-
-			//Highlight selected row
-			$scope.collectionsInfo.forEach(function(row){
-				if (row.isbn === isbn) {
-					row.isSelected = true;
-				} else {
-					row.isSelected = false;
-				}
-			});
-
-			$scope.bookInfo = info;
+		$scope.collectionsInfo.forEach(function(row){
+			if (row.isbn === isbn) {
+				row.isSelected = true;
+			} else {
+				row.isSelected = false;
+			}
 		});
+
+		$scope.bookInfo = BookService.getBookInfo(isbn);	
 	};
 
 	$scope.deleteCollection = function(bookInfo){
