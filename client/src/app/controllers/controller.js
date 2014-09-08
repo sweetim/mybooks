@@ -14,8 +14,8 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 
 	CollectionService.getCollection().then(function(collections){
 		collections.forEach(function(book){
-			CollectionService.getBook(book.isbn).then(function(bookInfo){
-				var info = {
+			console.log(book);
+			var info = {
 					isbn: book.isbn,
 					title: bookInfo.title,
 					dateCreated: book.dateCreated,
@@ -24,14 +24,13 @@ myBookController.controller('HomeController', ['$scope', 'UserService', 'Collect
 					isSelected: false
 				};
 
-				//Highlight first element
-				if ($scope.collectionsInfo.length < 1) {
-					info.isSelected = true;
-					$scope.bookInfo = bookInfo;
-				}
+			//Highlight first element
+			if ($scope.collectionsInfo.length < 1) {
+				info.isSelected = true;
+				$scope.bookInfo = bookInfo;
+			}
 
-				$scope.collectionsInfo.push(info);
-			});
+			$scope.collectionsInfo.push(info);
 		});
 	});
 

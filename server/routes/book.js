@@ -145,7 +145,26 @@ exports.getCollection = function(req, res, next){
 		} else {
 			var isbnCollection = [];
 
-			for(var i = 0; i < collection.length; i++){				
+			for(var i = 0; i < collection.length; i++){
+				isbnCollection[i] = collection[i].isbn;
+			}
+
+			Book.find()
+				.where('isbn')
+				.in(isbnCollection)
+				.exec(function(err, book){
+				if (err) {
+					next(err);
+				} else {
+					res.json({
+						result: 1,
+						totalCollection: collection.length,
+						collection: collection
+					});
+				}
+			});
+
+			/*for(var i = 0; i < collection.length; i++){				
 				var collectionInfo = {};
 				collectionInfo.isbn = collection[i].isbn;
 				collectionInfo.dateCreated = collection[i].dateCreated;
@@ -157,7 +176,7 @@ exports.getCollection = function(req, res, next){
 				result: 1,
 				totalCollection: isbnCollection.length,
 				collection: isbnCollection
-			});
+			});*/
 		}
 	});
 };

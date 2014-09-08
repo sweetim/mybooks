@@ -103,7 +103,7 @@ myBookService.factory('CollectionService', ['$q', '$http', function($q, $http){
 				.success(function(res){
 
 					//Convert to normal date format
-					res.collection.forEach(function(data){
+					res.bookInfo.forEach(function(data){
 						var date = new Date(data.dateCreated);
 						data.dateCreated = date.toUTCString();
 					});
